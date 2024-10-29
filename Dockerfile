@@ -22,6 +22,9 @@ COPY package*.json ./
 # Install the dependencies
 RUN npm ci --only=production --ignore-scripts
 
+# Run npm install (if you want to install all dependencies including devDependencies, adjust the flag)
+RUN npm install
+
 # Copy the rest of the source code to the working directory
 COPY . .
 
