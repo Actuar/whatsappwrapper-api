@@ -3,8 +3,10 @@ services:
     image: chrishubert/whatsapp-web-api:latest
     networks:
       - actuar
+    ports:
+      - "8080:3000"  # Mapeia a porta 3000 do contêiner para a porta 8080 no host
     volumes:
-      - api_actuar_sessions:/usr/src/app/sessions  # Corrigido para api_actuar_sessions
+      - api_actuar_sessions:/usr/src/app/sessions  # Volume externo
     environment:
       - API_KEY=YWN0dWFyLmdyb3Vw  # OPTIONAL
       - BASE_WEBHOOK_URL=https://api.actuar.com/localCallbackExample
