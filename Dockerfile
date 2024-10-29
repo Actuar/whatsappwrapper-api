@@ -20,13 +20,16 @@ RUN set -x \
 COPY package*.json ./
 
 # Install the dependencies
-RUN npm ci --only=production --ignore-scripts
-
-# Run npm install (if you want to install all dependencies including devDependencies, adjust the flag)
 RUN npm install
 
 # Copy the rest of the source code to the working directory
 COPY . .
+
+# Rebuild the lock file if necessary
+RUN npm install --package-lock-only
+
+# Install dependencies using npm ci to ensure a clean environment
+RUN npm ci --only=production --ignore-scripts
 
 # Expose the port the API will run on
 EXPOSE 3000
