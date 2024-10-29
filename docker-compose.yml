@@ -1,19 +1,16 @@
-version: '3.8'
-
 services:
-  api_zdg:
+  api.actuar:
     image: chrishubert/whatsapp-web-api:latest
     networks:
-      - comunidadezdg
+      - actuar
     volumes:
-    - api_zdg_sessions:/usr/src/app/sessions
+      - api_actuar_sessions:/usr/src/app/sessions  # Corrigido para api_actuar_sessions
     environment:
-      - API_KEY=comunidadezdg  # OPTIONAL
-      - BASE_WEBHOOK_URL=https://api2024.comunidadezdg.com.br/localCallbackExample
+      - API_KEY=YWN0dWFyLmdyb3Vw  # OPTIONAL
+      - BASE_WEBHOOK_URL=https://api.actuar.com/localCallbackExample
       - ENABLE_LOCAL_CALLBACK_EXAMPLE=TRUE # OPTIONAL, NOT RECOMMENDED FOR PRODUCTION
       - MAX_ATTACHMENT_SIZE=5000000 # IN BYTES
       - SET_MESSAGES_AS_SEEN=TRUE # WILL MARK THE MESSAGES AS READ AUTOMATICALLY
-      # ALL CALLBACKS: auth_failure|authenticated|call|change_state|disconnected|group_join|group_leave|group_update|loading_screen|media_uploaded|message|message_ack|message_create|message_reaction|message_revoke_everyone|qr|ready|contact_changed
       - DISABLED_CALLBACKS=message_ack  # PREVENT SENDING CERTAIN TYPES OF CALLBACKS BACK TO THE WEBHOOK
       - ENABLE_SWAGGER_ENDPOINT=TRUE # OPTIONAL, ENABLES THE /api-docs ENDPOINT
     deploy:
@@ -28,20 +25,20 @@ services:
           memory: 2048M
       labels:
         - traefik.enable=true
-        - traefik.http.routers.api_zdg.rule=Host(`api2024.comunidadezdg.com.br`)
-        - traefik.http.routers.api_zdg.entrypoints=websecure
-        - traefik.http.routers.api_zdg.tls.certresolver=letsencryptresolver
-        - traefik.http.routers.api_zdg.priority=1
-        - traefik.http.routers.api_zdg.service=api_zdg
-        - traefik.http.services.api_zdg.loadbalancer.server.port=3000
-        - traefik.http.services.api_zdg.loadbalancer.passHostHeader=true
+        - traefik.http.routers.api.actuar.rule=Host(`api.actuar.com`)
+        - traefik.http.routers.api.actuar.entrypoints=websecure
+        - traefik.http.routers.api.actuar.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.api.actuar.priority=1
+        - traefik.http.routers.api.actuar.service=api.actuar
+        - traefik.http.services.api.actuar.loadbalancer.server.port=3000
+        - traefik.http.services.api.actuar.loadbalancer.passHostHeader=true
 
 volumes:
-  api_zdg_sessions:
+  api_actuar_sessions:
     external: true
-    name: api_zdg_sessions
+    name: api_actuar_sessions  # Certifique-se de que o volume externo com esse nome existe no Docker
 
 networks:
-  comunidadezdg:
-    name: comunidadezdg
+  actuar:
+    name: actuar
     external: true
